@@ -135,7 +135,7 @@ def get_channel_items() -> CategoryChannelData:
                                                 continue
                                         except:
                                             pass
-                                        pure_url = info["url"].partition("$")[0]
+                                        pure_url = info[0].partition("$")[0]
                                         if pure_url not in urls:
                                             channels[cate][name].append(info)
     return channels
