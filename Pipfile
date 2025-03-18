@@ -1,6 +1,6 @@
 [[source]]
-name = "aliyun"
-url = "https://mirrors.aliyun.com/pypi/simple"
+name = "pypi"
+url = "https://pypi.org/simple"
 verify_ssl = true
 
 [scripts]
@@ -14,31 +14,22 @@ docker_build = "docker buildx build --platform linux/amd64,linux/arm64,linux/arm
 docker_build_lite = "docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --build-arg APP_WORKDIR=/iptv-api-lite --build-arg LITE=True -t guovern/iptv-api:lite ."
 
 [dev-packages]
-requests = "*"
-selenium = "*"
-bs4 = "*"
-tqdm = "*"
-async-timeout = "*"
-pyinstaller = "*"
-aiohttp = "*"
-flask = "*"
-opencc-python-reimplemented = "*"
-pillow = "*"
-m3u8 = "*"
-pytz = "*"
+pyinstaller = "==6.12.0"
+selenium = "==4.29.0"
 
 [packages]
-requests = "*"
-bs4 = "*"
-tqdm = "*"
-async-timeout = "*"
-aiohttp = "*"
-flask = "*"
-opencc-python-reimplemented = "*"
-gunicorn = "*"
-pillow = "*"
-m3u8 = "*"
-pytz = "*"
+requests = "==2.32.3"
+bs4 = "==0.0.2"
+tqdm = "==4.67.1"
+async-timeout = "==5.0.1"
+aiohttp = "==3.11.13"
+flask = "==3.1.0"
+opencc-python-reimplemented = "==0.1.7"
+gunicorn = "==23.0.0"
+pillow = "==11.1.0"
+m3u8 = "==6.0.0"
+pytz = "==2025.1"
+pystray = "==0.19.5"
 
 [requires]
 python_version = "3.13"

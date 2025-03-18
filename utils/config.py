@@ -311,6 +311,10 @@ class ConfigManager:
         return self.config.getboolean("Settings", "open_empty_category", fallback=True)
 
     @property
+    def app_host(self):
+        return os.environ.get("APP_HOST") or self.config.get("Settings", "app_host", fallback="localhost")
+
+    @property
     def app_port(self):
         return os.environ.get("APP_PORT") or self.config.getint("Settings", "app_port", fallback=8000)
 
@@ -345,6 +349,10 @@ class ConfigManager:
     @property
     def cdn_url(self):
         return self.config.get("Settings", "cdn_url", fallback="")
+
+    @property
+    def open_rtmp(self):
+        return self.config.getboolean("Settings", "open_rtmp", fallback=False)
 
     def load(self):
         """
@@ -382,13 +390,13 @@ class ConfigManager:
         with open(user_config_path, "w", encoding="utf-8") as configfile:
             self.config.write(configfile)
 
-    def copy(self):
+    def copy(self, path="config"):
         """
         Copy config files to current directory
         """
-        dest_folder = os.path.join(os.getcwd(), "config")
+        dest_folder = os.path.join(os.getcwd(), path)
         try:
-            src_dir = resource_path("config")
+            src_dir = resource_path(path)
             if os.path.exists(src_dir):
                 if not os.path.exists(dest_folder):
                     os.makedirs(dest_folder, exist_ok=True)
