@@ -342,8 +342,8 @@ def get_ip_address():
     Get the IP address
     """
     host = os.getenv("APP_HOST", config.app_host)
-    port = os.getenv("APP_PORT", config.app_port)
-    return f"http://{host}:{port}"
+    port = os.getenv("SERVER_PORT", config.app_port)
+    return f"{host}:{port}"
 
 
 def convert_to_m3u(path=None, first_channel_name=None):

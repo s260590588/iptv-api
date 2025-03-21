@@ -21,9 +21,9 @@ ipv4_rtmp_result_path = os.path.join(output_dir, "ipv4/rtmp.txt")
 
 ipv6_rtmp_result_path = os.path.join(output_dir, "ipv6/rtmp.txt")
 
-result_data_path = os.path.join(output_dir, "cache/result_data.pkl")
+rtmp_data_path = os.path.join(output_dir, "data/rtmp.db")
 
-cache_path = os.path.join(output_dir, "cache/cache.pkl")
+cache_path = os.path.join(output_dir, "data/cache.pkl")
 
 sort_log_path = os.path.join(output_dir, "log/sort.log")
 

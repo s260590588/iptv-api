@@ -11,7 +11,7 @@ from bs4 import NavigableString
 
 import utils.constants as constants
 from utils.config import config
-from utils.data_manager import DataManager
+from utils.db import get_db_connection, return_db_connection
 from utils.speed import (
     get_speed,
     sort_urls,
@@ -782,14 +782,20 @@ def process_write_content(path: str,
         else:
             content += f"\n\n🕘️更新时间,#genre#\n{now},{value}"
     if rtmp_url:
-        if os.path.exists(constants.result_data_path):
-            with open(constants.result_data_path, "rb") as f:
-                result_data += pickle.load(f)
-                result_data = list({item["id"]: item for item in result_data}.values())
-        with open(constants.result_data_path, "wb") as f:
-            pickle.dump(result_data, f)
-        data_manager = DataManager()
-        data_manager.save_data(result_data)
+        conn = get_db_connection(constants.rtmp_data_path)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                "CREATE TABLE IF NOT EXISTS result_data (id TEXT PRIMARY KEY, url TEXT, ipv_type TEXT)"
+            )
+            for item in result_data:
+                cursor.execute(
+                    "INSERT OR REPLACE INTO result_data (id, url, ipv_type) VALUES (?, ?, ?)",
+                    (item["id"], item["url"], item["ipv_type"])
+                )
+            conn.commit()
+        finally:
+            return_db_connection(constants.rtmp_data_path, conn)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
         if callback:
@@ -804,7 +810,8 @@ def write_channel_to_file(data, ipv6=False, first_channel_name=None, callback=No
     Write channel to file
     """
     try:
-        dir_list = ["output", "output/ipv4", "output/ipv6", "output/cache", "output/log"]
+        output_dir = constants.output_dir
+        dir_list = [output_dir, f"{output_dir}/ipv4", f"{output_dir}/ipv6", f"{output_dir}/data", f"{output_dir}/log"]
         for dir_name in dir_list:
             os.makedirs(dir_name, exist_ok=True)
         open_empty_category = config.open_empty_category
